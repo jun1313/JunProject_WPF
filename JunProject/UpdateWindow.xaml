@@ -1,0 +1,49 @@
+﻿<Window x:Class="JunProject.UpdateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JunProject"
+        mc:Ignorable="d"
+            Title="UpdateWindow" Height="400" Width="300">
+    <Window.Resources>
+        <Style x:Key="RoundTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <StackPanel Orientation="Vertical">
+        <StackPanel Margin="10" Orientation="Vertical" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding AddId, Mode=TwoWay}" Visibility="Collapsed"/>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">제목</Label>
+            <TextBox Style="{StaticResource RoundTextBoxStyle}" Text="{Binding Temp.Title, Mode=TwoWay}" FontSize="15" x:Name="Name_input" Width="142.5" VerticalAlignment="Center"/>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">기한</Label>
+            <TextBox Style="{StaticResource RoundTextBoxStyle}" Name="addDate" Text="{Binding Temp.Date, Mode=TwoWay}" FontSize="15" Width="142.5" VerticalAlignment="Center"/>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">메모</Label>
+            <TextBox Style="{StaticResource RoundTextBoxStyle}" Text="{Binding Temp.Etc, Mode=TwoWay}" FontSize="15" x:Name="Birthday_input" Width="142.5" VerticalAlignment="Center"/>
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">완료</Label>
+            <TextBox Style="{StaticResource RoundTextBoxStyle}" Name="addDone" Text="{Binding Temp.Done, Mode=TwoWay}" FontSize="15" Width="142.5" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Grid.Column="1" Command="{Binding UpCommand}" Margin="5"  Width="100" Height="100" Background="Transparent" BorderThickness="0">
+                <Image Source="img/update.png"/>
+            </Button>
+            <Button Grid.Column="1" Command="{Binding DelInCommand}" Margin="5"  Width="100" Height="100" Background="Transparent" BorderThickness="0">
+                <Image Source="img/delete.png"/>
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</Window>
