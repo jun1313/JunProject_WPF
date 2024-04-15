@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace JunProject.ViewModels
 {
-    public class RelayCommand<T>:ICommand
+    public class RelayCommand<T> : ICommand
     {
         private readonly Predicate<object> _canExecute;
         private readonly Action<object> _execute;

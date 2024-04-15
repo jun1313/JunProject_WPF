@@ -12,6 +12,6 @@ namespace JunProject.utilitys
         public string Title { get; set; }
         public string Date { get; set; }
         public string Etc { get; set; }
-        public string Done { get; set; }
+        public bool Done { get; set; }
     }
 }

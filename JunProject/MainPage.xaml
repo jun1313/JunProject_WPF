@@ -6,135 +6,310 @@
       xmlns:local="clr-namespace:JunProject"
       mc:Ignorable="d" 
       d:DesignHeight="700" d:DesignWidth="1300"
-      Title="MainPage">
+      Title="MainPage"
+      >
+
     <Page.Resources>
         <SolidColorBrush x:Key="CalendarBackgroundBrush" Color="Yellow" />
     </Page.Resources>
-    <Grid>
+
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="1.5*"/>
         </Grid.ColumnDefinitions>
-
+        <!--무언가+음악-->
         <Grid Grid.Column="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="1.5*"/>
             </Grid.RowDefinitions>
+            <!--GPT-->
+            <Border CornerRadius="10" Grid.Row="0" Margin="15" Background="#FFE8E8E8">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="9*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <!--GPT 출력-->
+                        <Grid Grid.Row="0">
+                            <ListView Name="GptList" ItemsSource="{Binding Chat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.CanContentScroll="False" Background="SeaShell">
+                                <ListView.Resources>
+                                    <Style TargetType="ScrollViewer">
+                                        <EventSetter Event="ScrollChanged" Handler="ListView_ScrollChanged"/>
+                                    </Style>
+                                </ListView.Resources>
+                                <ListView.Template>
+                                    <ControlTemplate TargetType="ListView">
+                                        <Border  
+                                            CornerRadius="10,10,0,0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="{TemplateBinding BorderThickness}" 
+                                            Background="{TemplateBinding Background}">
+                                            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                                                <ItemsPresenter/>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </ControlTemplate>
+                                </ListView.Template>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Row="0">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="img/User.png" Width="40" Height="40"/>
+                                                    <TextBlock Text="{Binding Path=UserText}" FontSize="13" Margin="5" TextWrapping="Wrap" Width="{Binding ElementName=inputWidth, Path=ActualWidth}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Grid>
+                                            <Grid Grid.Row="1">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="img/Gpt.png" Width="40" Height="40"/>
+                                                    <TextBlock Text="{Binding Path=GptText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="13" Margin="5" TextWrapping="Wrap" Width="{Binding ElementName=inputWidth, Path=ActualWidth}" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    <!--GPT 질문-->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="7*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" CornerRadius="10">
+                            <TextBox x:Name="inputWidth" FontSize="13" Text="{Binding InputGPT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Height="{Binding ElementName=bt_height, Path=ActualHeight}" VerticalAlignment="Center">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Return" Command="{Binding Input_GPT}"/>
+                                </TextBox.InputBindings>
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="TextBox">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            CornerRadius="0,0,0,10">
+                                                        <ScrollViewer x:Name="PART_ContentHost"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Border>
+                        <Border Grid.Column="1" CornerRadius="10">
+                            <Button x:Name="bt_height" FontSize="20" Command="{Binding Input_GPT}" Background="SeaShell">
+                                <Image Source="img/enter.png"/>
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border
+                                                        Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        CornerRadius="0,0,10,0">
+                                                        <ContentPresenter 
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
             <!--음악-->
-            <Grid Grid.Row="0" Grid.Column="1">
-                
-            </Grid>
-            <!--날씨-->
-            <Grid Grid.Row="1" Grid.Column="1">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Background="AliceBlue">
-                    <StackPanel Orientation="Vertical">
-                        <Label Content="{Binding Weather.WeatherPosition}" FontSize="15" HorizontalAlignment="Center"/>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <TextBlock/>
-                            <Label Content="시간" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <Label Content="날씨" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <Label Content="기온" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <Image Source="{Binding Path=Weather.Weathers[0].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[0].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[0].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[0].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <Image Source="{Binding Path=Weather.Weathers[1].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[1].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[1].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[1].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <Image Source="{Binding Path=Weather.Weathers[2].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[2].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[2].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[2].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <Image Source="{Binding Path=Weather.Weathers[3].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[3].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[3].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[3].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <Image Source="{Binding Path=Weather.Weathers[4].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[4].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[4].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[4].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <Image Source="{Binding Path=Weather.Weathers[5].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[5].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[5].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[5].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="6">
-                            <Image Source="{Binding Path=Weather.Weathers[6].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[6].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[6].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[6].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <Image Source="{Binding Path=Weather.Weathers[7].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[7].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[7].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[7].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        <UniformGrid Columns="4" Rows="1" Margin="5">
-                            <Image Source="{Binding Path=Weather.Weathers[8].Image}" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[8].Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[8].Weather}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <TextBlock FontSize="15" Text="{Binding Weather.Weathers[8].Temperature}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </UniformGrid>
-                        
+            <Border CornerRadius="10" Grid.Row="1" Margin="15" Background="#FFE8E8E8" >
+                <Grid Margin="10">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="3*"></RowDefinition>
+                        <RowDefinition Height="0.8*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!--음악 제목-->
+                    <Border Grid.Row="0" Background="BlanchedAlmond" CornerRadius="10,10,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="18*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label FontSize="20" Content="{Binding Playing}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent"/>
+                            <Button Grid.Column="1" Command="{Binding PathCommand}" Background="Transparent" BorderThickness="0">
+                                <Image Source="img/folder.png"/>
+                                
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <!--음악 리스트-->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="181*"/>
+                            <ColumnDefinition Width="300*"/>
+                            <ColumnDefinition Width="119*"/>
+                        </Grid.ColumnDefinitions>
 
 
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
+                        <ListView ItemsSource="{Binding Player.Musics}" Background="BlanchedAlmond" Grid.ColumnSpan="3" SelectedItem="{Binding Music_st, Mode=TwoWay}" BorderThickness="0">
+                            <ListView.Template>
+                                <ControlTemplate TargetType="ListView">
+                                    <Border
+                                        BorderBrush="{TemplateBinding BorderBrush}" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        Background="{TemplateBinding Background}">
+                                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                                            <ItemsPresenter/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </ControlTemplate>
+                            </ListView.Template>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                        <TextBlock Text="{Binding Title}" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Center" Name="musicTitle">
+                                            <TextBlock.InputBindings>
+                                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding DataContext.MusicDoubleCommand, RelativeSource={RelativeSource AncestorType=Page}}" />
+                                            </TextBlock.InputBindings>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding Artist}" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Duration}" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                        </ListView>
+                    </Grid>
+                    <!--음악 버튼-->
+                    <Border Grid.Row="2" Background="BlanchedAlmond" CornerRadius="0,0,10,10">
+                        <UniformGrid Columns="3" Rows="1">
+                            <Button Name="Play_Back" Background="Transparent" Command="{Binding BackCommand}" BorderThickness="0">
+                                <Image Source="img/back.png" Margin="10"/>
+                            </Button>
+                            <Button Name="Play" Background="Transparent" Command="{Binding StopCommand}" BorderThickness="0">
+                                <Image Source="img/play.png" Margin="10"/>
+                            </Button>
+                            <Button Name="Play_Next" Command="{Binding NextCommand}" Background="Transparent" BorderThickness="0">
+                                <Image Source="img/next.png" Margin="10"/>
+                            </Button>
+
+                        </UniformGrid>
+                    </Border>
+
+                </Grid>
+            </Border>
         </Grid>
+        <!--날씨-->
+
+        <Grid Grid.Column="1">
+            <Border CornerRadius="10" Background="#FFE8E8E8" Margin="15">
+                <Grid Margin="10">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="8*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <!--날씨 제목-->
+                    <Border Grid.Row="0" Background="AliceBlue" CornerRadius="10,10,0,0">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="{Binding Weather.WeatherPosition}" FontSize="15" FontWeight="Bold"  HorizontalAlignment="Center"/>
+                            <UniformGrid Columns="4" Rows="1" Margin="5">
+                                <TextBlock/>
+                                <Label Content="시간" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Label Content="날씨" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Label Content="기온" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+                    <!--날씨 리스트-->
+                    <Border x:Name="weatherGrid" Grid.Row="1">
+                        <ListView  Background="AliceBlue" ItemsSource="{Binding Weather.Weathers}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <UniformGrid Columns="4" Rows="1" Margin="10" Width="{Binding ElementName=weatherGrid, Path=ActualWidth}">
+                                        <Image Source="{Binding Path=Image}" Width="40" Height="40" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <TextBlock FontSize="15" Text="{Binding Path=Time}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <TextBlock FontSize="15" Text="{Binding Path=Weather}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        <TextBlock FontSize="15" Text="{Binding Path=Temperature}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    </UniformGrid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.Template>
+                                <ControlTemplate TargetType="ListView">
+                                    <Border
+                                        CornerRadius="0,0,10,10"
+                                        BorderBrush="{TemplateBinding BorderBrush}" 
+                                        BorderThickness="0" 
+                                        Background="{TemplateBinding Background}">
+                                        <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+                                            <ItemsPresenter/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </ControlTemplate>
+                            </ListView.Template>
+                        </ListView>
+                    </Border>
+                </Grid>
+            </Border>
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="20" Color="Gray"/>
+            </Grid.Effect>
+        </Grid>
+
         <!--캘린더+투두리스트-->
-        <Grid Grid.Column="1" Background="Transparent">
+        <Grid Grid.Column="2" Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.77*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
             <!--캘린더-->
-            <Grid Grid.Row="0" Margin="10">
-                <Viewbox VerticalAlignment="Top">
-                    <Calendar MouseDoubleClick="DoubleClick_Calandar"/>
-                </Viewbox>
-            </Grid>
-            <Grid Grid.Row="1" Background="LightYellow" Margin="15">
-                <Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="#FFE8E8E8" CornerRadius="10" Margin="15">
+                <Border CornerRadius="10" Margin="5">
+                    <Viewbox>
+                        <Calendar MouseDoubleClick="DoubleClick_Calandar" SelectedDate="{Binding Date_temp}"/>
+                    </Viewbox>
+                </Border>
+            </Border>
+            <!--투투리스트 시작-->
+            <Border Grid.Row="1" Background="#FFE8E8E8" Margin="15" CornerRadius="10">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
                         <RowDefinition Height="0.8*"></RowDefinition>
                         <RowDefinition Height="4*"></RowDefinition>
                         <RowDefinition Height="1*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <!--투두리스트 제목-->
-                    <Grid Grid.Row="0"  Background="LightYellow">
+                    <Border Grid.Row="0"  Background="LightYellow" CornerRadius="10,10,0,0">
                         <Label Content="투 두 리스트" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Grid>
+                    </Border>
                     <!--투두리스트-->
 
-                    <Grid Grid.Row="1">
+                    <Grid Grid.Row="1" Background="LightYellow">
                         <DataGrid ItemsSource="{Binding Todos, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  AutoGenerateColumns="False"
-                                  CanUserAddRows="False"
-                                  HeadersVisibility="Column"
-                                  x:Name="Lists"
-                                  VerticalAlignment="Top"
-                                  RowHeight="25"
-                                  SelectedItem="{Binding SelectedInfo, Mode=TwoWay}"
-                                  MouseDoubleClick="DoubleClick_Data">
+                                      AutoGenerateColumns="False"
+                                      CanUserAddRows="False"
+                                      HeadersVisibility="Column"
+                                      x:Name="Lists"
+                                      VerticalAlignment="Top"
+                                      RowHeight="25"
+                                      BorderThickness="0"
+                                      SelectedItem="{Binding SelectedInfo, Mode=TwoWay}"
+                                      MouseDoubleClick="DoubleClick_Data">
                             <!--스타일 시작-->
                             <DataGrid.ColumnHeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">
@@ -143,15 +318,18 @@
                                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="BorderBrush" Value="LightYellow"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Height" Value="30"/>
                                 </Style>
                             </DataGrid.ColumnHeaderStyle>
                             <DataGrid.CellStyle>
                                 <Style TargetType="DataGridCell">
                                     <Style.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Foreground" Value="Orange"/>
+                                            <Setter Property="Foreground" Value="Beige"/>
                                         </Trigger>
                                     </Style.Triggers>
+                                    <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="DataGridCell">
@@ -166,25 +344,25 @@
                             <!--스타일 끝-->
                             <DataGrid.Columns>
                                 <DataGridTextColumn
-                                    Binding="{Binding Path=Title}"
-                                    Header="할 일" 
-                                    Width="1*"/>
+                                        Binding="{Binding Path=Title}"
+                                        Header="할 일" 
+                                        Width="0.7*"/>
                                 <DataGridTextColumn
-                                    Binding="{Binding Path=Date}"
-                                    Header="기한"
-                                    Width="1*"/>
+                                        Binding="{Binding Path=Date}"
+                                        Header="기한"
+                                        Width="1*"/>
                                 <DataGridTextColumn
-                                    Binding="{Binding Path=Etc}"
-                                    Header="메모"
-                                    Width="1*"/>
+                                        Binding="{Binding Path=Etc}"
+                                        Header="메모"
+                                        Width="0.7*"/>
                                 <DataGridCheckBoxColumn
-                                    Header="완료"
-                                    Binding="{Binding Path=Done}"
-                                    Width="1*"/>
+                                        Header="완료"
+                                        Binding="{Binding Path=Done}"
+                                        Width="0.5*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
-                    <Grid Grid.Row="2">
+                    <Border Grid.Row="2" Background="LightYellow" CornerRadius="0,0,10,10">
                         <!--투두리스트 버튼-->
                         <UniformGrid Columns="2" Rows="1" Margin="5">
                             <Button Command="{Binding ConnectCommand}" Background="Transparent" BorderThickness="0">
@@ -195,12 +373,12 @@
                             </Button>
                         </UniformGrid>
 
-                    </Grid>
-
+                    </Border>
                 </Grid>
-            
+            </Border>
 
         </Grid>
-            
     </Grid>
+
+
 </Page>

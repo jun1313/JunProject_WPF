@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using MySql.Data.MySqlClient;
 using JunProject.utilitys;
+using Org.BouncyCastle.Asn1.Cms;
 
 namespace JunProject
 {
@@ -200,9 +201,10 @@ namespace JunProject
             Todos.Clear();
             foreach (DataRow dr in dt.Rows)
             {
-                //string date = ((DateTime)dr["date"]).ToString();
-                //string done = ((bool)dr["done"]).ToString();
-                Todos.Add(new Todo() { Id = (int)dr["id"], Title = (string)dr["title"], Date = dr["date"].ToString(), Etc = (string)dr["etc"], Done= dr["done"].ToString() });
+                bool temp;
+                if ((string)dr["done"] == "1") temp = true;
+                else temp = false;
+                Todos.Add(new Todo() { Id = (int)dr["id"], Title = (string)dr["title"], Date = dr["date"].ToString(), Etc = (string)dr["etc"], Done= temp });
             }
         }
 
@@ -283,6 +285,29 @@ namespace JunProject
                     MessageBox.Show($"update 실패 \n {ex.Message}");
                 }
             }
+        }
+        //musicPlayer
+        public void Select_MusicPlayer(ObservableCollection<Music> Temp)
+        {
+            string connectionString = "UID=root;PWD=1234;Server=127.0.0.1;Port=3306;Database=CRUD";
+            Connection(connectionString);
+            DataTable dt = new DataTable();
+            string query = "select * from musics;";
+            using (MySqlCommand cmd = _conn.CreateCommand())
+            using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+            {
+                cmd.CommandText = query;
+                da.Fill(dt);
+            }
+            Temp.Clear();
+            foreach (DataRow dr in dt.Rows)
+            {
+                //string date = ((DateTime)dr["date"]).ToString();
+                //string done = ((bool)dr["done"]).ToString();
+                Temp.Add(new Music() { Title = (string)dr["title"], Artist = (string)dr["artist"], Duration = (string)dr["duration"].ToString(), Uri = (string)dr["uri"]});
+            }
+
+            Close_Connection();
         }
     }
 }

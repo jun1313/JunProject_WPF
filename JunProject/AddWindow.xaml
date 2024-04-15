@@ -30,9 +30,9 @@
         <StackPanel Margin="10" Orientation="Vertical" HorizontalAlignment="Center">
             <TextBlock Text="{Binding AddId, Mode=TwoWay}" Visibility="Collapsed"/>
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">제목</Label>
-            <TextBox Style="{StaticResource RoundTextBoxStyle}" Text="{Binding Todo_st.Title, Mode=TwoWay}" FontSize="15" x:Name="Name_input" Width="142.5" VerticalAlignment="Center"/>
+            <TextBox Style="{StaticResource RoundTextBoxStyle}" FontSize="15" x:Name="Name_input" Text="{Binding Todo_st.Title, Mode=TwoWay}" Width="142.5" VerticalAlignment="Center"/>
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">기한</Label>
-            <TextBox Style="{StaticResource RoundTextBoxStyle}" Name="addDate" Text="{Binding Todo_st.Date, Mode=TwoWay}" FontSize="15" Width="142.5" VerticalAlignment="Center"/>
+            <TextBox Style="{StaticResource RoundTextBoxStyle}" Name="addDate" Text="{Binding Todo_st.Date, Mode=TwoWay, NotifyOnSourceUpdated=True}" FontSize="15" Width="142.5" VerticalAlignment="Center"/>
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">메모</Label>
             <TextBox Style="{StaticResource RoundTextBoxStyle}" Text="{Binding Todo_st.Etc, Mode=TwoWay}" FontSize="15" x:Name="Birthday_input" Width="142.5" VerticalAlignment="Center"/>
             <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">완료</Label>

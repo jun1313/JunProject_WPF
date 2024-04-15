@@ -24,15 +24,6 @@ namespace JunProject
         public AddWindow(DateTime selectedDate)
         {
             InitializeComponent();
-            Loaded += (sender, e) =>
-            {
-                ;
-                //새로 만들지말고
-                DataContext = new MainViewModel();
-                ((MainViewModel)DataContext).Todo_st.Date = selectedDate.ToString("yyyy-MM-dd");
-                ((MainViewModel)DataContext).Todo_st.Done = "0";
-            };
         }
-
     }
 }

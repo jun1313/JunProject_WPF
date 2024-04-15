@@ -43,15 +43,10 @@ namespace JunProject.Weather
                     XmlNodeList tagNodes = xDoc.SelectNodes("//channel/item/description/body/data");
                     XmlNodeList tagNodes_locate = xDoc.SelectNodes("//channel/item");
                     WeatherPosition = tagNodes_locate[0].SelectSingleNode("category").InnerText;
-                    Weathers.Add(insert(tagNodes, 0));
-                    Weathers.Add(insert(tagNodes, 3));
-                    Weathers.Add(insert(tagNodes, 6));
-                    Weathers.Add(insert(tagNodes, 9));
-                    Weathers.Add(insert(tagNodes, 12));
-                    Weathers.Add(insert(tagNodes, 15));
-                    Weathers.Add(insert(tagNodes, 18));
-                    Weathers.Add(insert(tagNodes, 21));
-                    Weathers.Add(insert(tagNodes, 24));
+                    for(int i = 0; i < 9; i++)
+                    {
+                        Weathers.Add(insert(tagNodes, 3*i));
+                    }
                 }
             }
             catch (Exception ex)
@@ -66,11 +61,12 @@ namespace JunProject.Weather
         {
             WeatherInfo temp = new WeatherInfo();
             temp.Time = tagNodes[num].SelectSingleNode("hour").InnerText + "시";
-            temp.Weather = tagNodes[num].SelectSingleNode("wfKor").InnerText;
+            temp.Weather = tagNodes[num].SelectSingleNode("wfKor").InnerText.Replace(" ", "");
             temp.Temperature = tagNodes[num].SelectSingleNode("temp").InnerText + "ºC";
             if (temp.Weather.Contains("맑음")) temp.Image = "img/sun.png";
             else if (temp.Weather.Contains("흐림")) temp.Image = "img/sunwithcloud.png";
             else if (temp.Weather.Contains("구름")) temp.Image = "img/cloud.png";
+            else if (temp.Weather.Contains("비")) temp.Image = "img/rain.png";
             return temp;
         }
 
