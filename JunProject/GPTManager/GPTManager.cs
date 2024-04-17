@@ -24,7 +24,7 @@ namespace JunProject
 
         public GPTManager()
         {
-            var GptApiKey = "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";
+            var GptApiKey = "API_Key";
             APIAuthentication aPIAuthentication = new APIAuthentication(GptApiKey);
             openAiApi = new OpenAIAPI(aPIAuthentication);
             conversations = new Conversation();
